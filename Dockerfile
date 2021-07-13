@@ -10,6 +10,7 @@ COPY api/package*.json ./api/
 RUN cd api && npm install
 COPY api/server.js ./api/
 
+#Access the app at port 80
 EXPOSE 80
 
 CMD ["node", "./api/server.js"]
