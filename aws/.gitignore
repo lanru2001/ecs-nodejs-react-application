@@ -1,5 +1,5 @@
 
-# compiled file and directory to ignore 
+#compiled file and directory to ignore 
 **/.terraform/
 **/.terraform.lock.hcl 
 *.tfstate 
