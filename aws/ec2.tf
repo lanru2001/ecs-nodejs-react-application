@@ -3,7 +3,6 @@
 #NB: Create an ssh key in aws/ec2.tf and call it mykey
 #ssh-keygen -f mykey
 
-
 #Key pair 
 resource "aws_key_pair" "mykeypair" {
   key_name   = "mykeypair"
