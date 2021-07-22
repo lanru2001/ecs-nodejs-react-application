@@ -14,7 +14,7 @@ pipeline {
         
         stage('Cloning Git') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/lanru2001/nodejs-react-application.git']]])     
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/lanru2001/nodejs-react-application.git']]])     
             }
         }
   
@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     
-                    sh  "docker build -t '${IMAGE}'  /var/lib/jenkins/workspace/nodejs_application/nodejs-react-application" 
+                    sh  "docker build -t '${IMAGE}'  /var/lib/jenkins/workspace/nodejs_application" 
                     
                 }
             }    
