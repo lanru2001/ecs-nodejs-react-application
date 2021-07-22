@@ -3,7 +3,7 @@ WORKDIR /usr/src/app
 COPY my-app/ ./my-app/
 RUN cd my-app 
 RUN npm install
-RUN npm ci 
+RUN npm run build
 
 FROM node:14 AS server-build
 WORKDIR /root/
