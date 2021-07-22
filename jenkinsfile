@@ -7,14 +7,14 @@ pipeline {
        IMAGE="${PROJECT}:${VERSION}"
        PROJECT="node-app"
        VERSION="latest"
-       registry ="216147165517.dkr.ecr.us-east-2.amazonaws.com/node-test"
+       registry ="873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app"
     }
    
     stages {
         
         stage('Cloning Git') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/lanru2001/devops-code-challenge.git']]])     
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/lanru2001/nodejs-react-application.git']]])     
             }
         }
   
@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     
-                    sh  "docker build -t '${IMAGE}'  /var/lib/jenkins/workspace/Build_docker_image/backend" 
+                    sh  "docker build -t '${IMAGE}'  /var/lib/jenkins/workspace/nodejs_application/nodejs-react-application" 
                     
                 }
             }    
@@ -31,11 +31,11 @@ pipeline {
         stage('Push to ECR') {
             steps {
                 script {
-                    sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 216147165517.dkr.ecr.us-east-2.amazonaws.com"
+                    sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 873079457075.dkr.ecr.us-east-2.amazonaws.com"
                     
-                    sh "docker tag ${PROJECT}:latest 216147165517.dkr.ecr.us-east-2.amazonaws.com/${PROJECT}:latest"
+                    sh "docker tag ${PROJECT}:latest  873079457075.dkr.ecr.us-east-2.amazonaws.com/${PROJECT}:latest"
                     
-                    sh "docker push 216147165517.dkr.ecr.us-east-2.amazonaws.com/${PROJECT}:latest"
+                    sh "docker push  873079457075.dkr.ecr.us-east-2.amazonaws.com/${PROJECT}:latest"
                 } 
             }
         }
