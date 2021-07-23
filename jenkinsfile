@@ -1,4 +1,5 @@
-currentBuild.displayName = "react-nodejs-app-#" + currentBuild.number 
+  
+currentBuild.displayName = "nodejs-app-#" + currentBuild.number 
 
 pipeline {
     agent any
@@ -8,8 +9,7 @@ pipeline {
        PROJECT="node-app"
        VERSION="latest"
        registry ="873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app"
-       
-       }
+    }
    
     stages {
         
@@ -34,13 +34,15 @@ pipeline {
                 script {
                     sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 873079457075.dkr.ecr.us-east-2.amazonaws.com"
                     
-                    sh "docker tag ${PROJECT}:latest  873079457075.dkr.ecr.us-east-2.amazonaws.com/${PROJECT}:latest"
+                    sh "docker tag react-test:latest 873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app:latest"
+
                     
-                    sh "docker push  873079457075.dkr.ecr.us-east-2.amazonaws.com/${PROJECT}:latest"
+                    sh "docker push 873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app:latest"
+
                 } 
             }
         }
         
     }    
     
-}
+} 
