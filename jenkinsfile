@@ -34,7 +34,7 @@ pipeline {
                 script {
                     sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 873079457075.dkr.ecr.us-east-2.amazonaws.com"
                     
-                    sh "docker tag react-test:latest 873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app:latest"
+                    sh "docker tag node-app:latest 873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app:latest"
 
                     
                     sh "docker push 873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app:latest"
