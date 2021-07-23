@@ -8,7 +8,8 @@ pipeline {
        PROJECT="node-app"
        VERSION="latest"
        registry ="873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app"
-    }
+       
+       }
    
     stages {
         
