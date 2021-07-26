@@ -120,16 +120,10 @@ variable "cloudwatch_log_stream" {
   default     = ""
 }
 
-variable "frontend_image" {
+variable "docker_image" {
   description = "Docker image of the application"
   default     = ""
 }
-
-variable "backend_image" {
-  description = "Docker image of the application"
-  default     = ""
-}
-
 
 variable "fargate_cpu" {
   type        = number 
@@ -143,16 +137,10 @@ variable "fargate_memory" {
   default     = 128
 }
 
-variable "react_container_port" {
-  type        = number 
-  description = "container port for the react app"
-  default     = 3000
-}
-
 variable "node_container_port" {
   type        = number 
   description = "container port for the node app"
-  default     = 8080
+  default     = ""
 }
 
 variable "delimiter" {
