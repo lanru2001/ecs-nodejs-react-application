@@ -66,14 +66,22 @@ resource "aws_security_group" "feather_service" {
    cidr_blocks      = ["0.0.0.0/0"]
   }
 
-   ingress {
+  ingress {
+   protocol         = "tcp"
+   from_port        = 22
+   to_port          = 22
+   cidr_blocks      = ["0.0.0.0/0"]
+
+  }
+
+  ingress {
    protocol         = "tcp"
    from_port        = 443
    to_port          = 443
    cidr_blocks      = ["0.0.0.0/0"]
   }
  
-   ingress {
+  ingress {
    protocol         = "tcp"
    from_port        = 8080
    to_port          = 8080
@@ -81,7 +89,7 @@ resource "aws_security_group" "feather_service" {
   }
 
   
- ingress {
+  ingress {
    protocol         = "tcp"
    from_port        = 3000
    to_port          = 3000
@@ -272,8 +280,8 @@ resource "aws_ecs_task_definition" "node_definition" {
       }
     ],
     "mountPoints": [],
-    "entryPoint": ["/bin/sh","-c"],
-    "command": ["\"/bin/sh -c \\ \"apk add --update nodejs npm & npm ci && npm start\"\""],
+    "entryPoint": [],
+    "command": [],
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -316,6 +324,6 @@ resource "aws_ecs_service" "app_service" {
   load_balancer {
     target_group_arn = aws_alb_target_group.feather_alb_tg_group.arn
     container_name   = "${local.environment_prefix}-app"
-    container_port   = var.docker_container_port
+    container_port   = var.node_container_port
   }
 }

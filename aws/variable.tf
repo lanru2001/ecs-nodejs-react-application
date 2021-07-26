@@ -135,12 +135,14 @@ variable "fargate_memory" {
   type        = number 
   description = "The memory for the fargate container"
   default     = 128
+
 }
 
 variable "node_container_port" {
-  type        = number 
-  description = "container port for the node app"
+  type        = string 
+  description = "The node container port number "
   default     = ""
+
 }
 
 variable "delimiter" {

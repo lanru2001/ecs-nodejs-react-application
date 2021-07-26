@@ -4,7 +4,7 @@ terraform {
     bucket         = "ecs-project"  
     key            = "project/ecs"
     region         = "us-east-2"
-    dynamodb_table = "lightfeather_dynamodb"
+    dynamodb_table = "eks_ecommerce_dynamodb"
 
  }
 } 

@@ -27,7 +27,7 @@ resource "aws_instance" "app_server" {
   ami                      = var.ami_id 
   instance_type            = "t2.micro" 
   key_name                 = aws_key_pair.mykeypair.key_name
-  vpc_security_group_ids   = [  aws_security_group.app_security_group.id  ]          #[ "sg-09fa14dc3ccbc786b" ]
+  vpc_security_group_ids   = [  aws_security_group.feather_service.id  ]          #[ "sg-09fa14dc3ccbc786b" ]
   subnet_id                = aws_subnet.app_public_subnets[0].id   
   user_data                = file("userdata.sh")
   lifecycle {
