@@ -259,15 +259,15 @@ resource "aws_ecs_task_definition" "node_definition" {
   container_definitions = <<EOF
 [
   {
-    "image": "${var.backend_image}",
+    "image": "${var.docker_image}",
     "name": "${local.environment_prefix}-app",
     "essential": true,
     "cpu": 256,
     "memoryReservation": 512,
     "portMappings": [
       {
-        "containerPort": 8080,
-        "hostPort": 8080,
+        "containerPort": 80,
+        "hostPort": 80,
         "protocol": "tcp"
       }
     ],
@@ -291,50 +291,6 @@ resource "aws_ecs_task_definition" "node_definition" {
 EOF
 }
 
-#ECS Task Definition 
-resource "aws_ecs_task_definition" "react_definition" {
-  count                    = var.create ? 1:0 
-  family                   = "${var.name}-react"
-  task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
-  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  network_mode             = "awsvpc"
-  cpu                      = 1024
-  memory                   = 2048
-  requires_compatibilities = ["FARGATE"]
-  container_definitions = <<EOF
-[
-  {
-    "image": "${var.frontend_image}",
-    "name": "${local.environment_prefix}-react",
-    "essential": true,
-    "cpu": 256,
-    "memoryReservation": 512,
-    "portMappings": [
-      {
-        "containerPort": 3000,
-        "hostPort": 3000,
-        "protocol": "tcp"
-      }
-    ],
-    "mountPoints": [],
-    "entryPoint": ["/bin/sh","-c"],
-    "command": ["\"/bin/sh -c \\ \"apk add --update nodejs npm & npm ci && npm start\"\""],
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-region": "${var.aws_region}",
-        "awslogs-group": "${var.cloudwatch_log_group_name}",
-        "awslogs-stream-prefix": "${var.cloudwatch_log_stream}"
-      }
-    },
-   
-    "placement_constraints": [],
-   
-    "volume": []
-  }
-]
-EOF
-}
 
 #ECS Service 
 resource "aws_ecs_service" "app_service" {
@@ -360,35 +316,6 @@ resource "aws_ecs_service" "app_service" {
   load_balancer {
     target_group_arn = aws_alb_target_group.feather_alb_tg_group.arn
     container_name   = "${local.environment_prefix}-app"
-    container_port   = var.node_container_port
-  }
-}
-
-
-#ECS Service 
-resource "aws_ecs_service" "react_service" {
-  name                               = "${var.name}-react" 
-  cluster                            = aws_ecs_cluster.feather_cluster.id
-  task_definition                    = aws_ecs_task_definition.react_definition[0].arn
-  desired_count                      = 1
-  launch_type                        = "FARGATE" 
-  scheduling_strategy                = "REPLICA"
-  platform_version                   = "LATEST"
-  deployment_minimum_healthy_percent = 50
-  deployment_maximum_percent         = 200
-  #health_check_grace_period_seconds  = 60   
-  #iam_role                           = aws_iam_role.app_svc.arn  
-  depends_on                         = [ aws_iam_role.feather_svc ] 
-
-  network_configuration {
-    security_groups  = [ aws_security_group.feather_alb.id, aws_security_group.feather_service.id ]
-    subnets          = [ aws_subnet.app_public_subnets[0].id,  aws_subnet.app_public_subnets[1].id ] #[ "subnet-097c6f21a3fc9e20a" , "subnet-07ac3ee92b8d45912"  ] 
-    assign_public_ip = true
-  }
-
-  load_balancer {
-    target_group_arn = aws_alb_target_group.feather_alb_tg_group.arn
-    container_name   = "${local.environment_prefix}-react"
-    container_port   = var.react_container_port
+    container_port   = var.docker_container_port
   }
 }
