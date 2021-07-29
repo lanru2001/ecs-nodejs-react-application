@@ -20,42 +20,43 @@ sudo yum -y install aws-cli
 # Confirm the AWS CLI was installed.
  aws --version              
 
-#  Bash script to install Jenkins on AWS EC2 
-
-sudo yum -y update
-
-echo "Install Java JDK 8"
-
+#  Bash script to install Java8 on AWS EC2 
 sudo yum remove -y java
-
 sudo yum install -y java-1.8.0-openjdk
 
-echo "Install Maven"
-
+#Install Maven"
 sudo yum install -y maven 
 
-echo "Install git"
-
+#Install git
 sudo yum install -y git
 
-echo "Install Docker engine"
+# simple script to install Docker on RedHat Linux/CentOS
 
-sudo yum update -y
+#Remove Podman container
+dnf remove -y podman buildah
 
-sudo yum install docker -y
+#Install yum-utils package
+dnf install -y yum-utils
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
-sudo sudo chkconfig docker on
 
-#Jenkins
+#Install the official latest community edition
+dnf install -y docker-ce
+sudo yum makecache
+sudo dnf -y  install docker-ce --nobest
+
+#Enable and start Docker Daemon
+sudo systemctl start  docker
+sudo systemctl enable docker
+
+#Run docker with privilege without a sudo
+sudo usermod -aG docker $USER
+
+#Bash script to install Jenkins on AWS EC2 
 sudo wget -O /etc/yum.repos.d/jenkins.repo \
     https://pkg.jenkins.io/redhat-stable/jenkins.repo
 sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
 sudo yum upgrade -y
 sudo yum install jenkins -y
 sudo systemctl daemon-reload
-
-echo "Start Docker & Jenkins services"
-
-sudo service docker start
-
-sudo service jenkins start
+sudo systemctl start jenkins
