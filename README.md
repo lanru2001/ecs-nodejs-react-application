@@ -31,7 +31,7 @@ Finally, copy the server.js into the same folder
 Have this command node ./api/server.js with the CMD. This automatically runs when we run the image.
 
 
-Nodejs React Application 
+Nodejs-React Application Architecture Design
 
 ![image](https://user-images.githubusercontent.com/59709429/134820678-2f6a7a5e-9b5a-4399-87bc-198242c5279a.png)
 
