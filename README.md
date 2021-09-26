@@ -39,6 +39,7 @@ Tech stack:
 - Nodejs
 - React
 - MySQL
+- Docker
 - Terraform
 - Bash Scripting 
 - AWS (ECS, ECR, IAM, SECURITY GROUP, ALB, FARGATE, VPC, EC2(Jenkins server)and CLOUDWATCH(logs and metrics))
