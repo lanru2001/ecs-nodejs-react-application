@@ -55,7 +55,7 @@ resource "aws_db_parameter_group" "eks_db_pg" {
 
 resource "aws_db_subnet_group" "db_subnet_group" {
   name       = "${var.name}_subnet_group"
-  subnet_ids = [ aws_subnet.eks_private_subnets[0].id, aws_subnet.eks_private_subnets[1].id ]
+  subnet_ids = [ aws_subnet.ecs_private_subnets[0].id, aws_subnet.eks_private_subnets[1].id ]
 
   tags = {
     Name = "My DB subnet group"
