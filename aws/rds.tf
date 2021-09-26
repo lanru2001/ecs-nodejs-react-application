@@ -17,7 +17,7 @@ resource "aws_db_instance" "app_mysql" {
   port                            = var.db_instance_port
   vpc_security_group_ids          = [ aws_security_group.db_security_group.id ]
   db_subnet_group_name            = "${aws_db_subnet_group.db_subnet_group.name}"
-  parameter_group_name            = aws_db_parameter_group.eks_db_pg.name
+  parameter_group_name            = aws_db_parameter_group.app_db_pg.name
   option_group_name               = var.option_group_name
   availability_zone               = "us-east-2a"  #var.azs
   multi_az                        = var.multi_az
