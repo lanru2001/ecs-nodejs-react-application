@@ -66,7 +66,7 @@ resource "aws_db_subnet_group" "db_subnet_group" {
 resource "aws_security_group" "db_security_group" {
   name                      = "${local.module_prefix}-db-sg"
   description               = "Allow traffic for MySQL db"
-  vpc_id                    =  aws_vpc.eks_vpc.id
+  vpc_id                    =  aws_vpc.app_vpc.id
 
   ingress {
     from_port   = 3306
