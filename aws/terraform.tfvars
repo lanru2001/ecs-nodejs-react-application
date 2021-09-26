@@ -29,7 +29,6 @@ private_subnet_id         = "subnet-0c6700f2915010226"
 engine                    = "mysql"
 engine_version            = "5.7.26"
 instance_class            = "db.t2.micro"
-#db_subnet_group_name      = "subnet-097c6f21a3fc9e20a"     # "subnet-0c6700f2915010226" # "subnet-05731ba59cb081e63"]
 tag                       = "app-dev"
 container_port            = 8080
 disk_size                 = 10
