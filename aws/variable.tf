@@ -534,6 +534,11 @@ variable "delete_automated_backups" {
   default     = true
 }
 
+variable "identifier" {
+  description = "The name of the RDS instance, if omitted, Terraform will assign a random, unique identifier"
+  type        = string
+}
+
 locals {
  
   environment_prefix = join(var.delimiter, compact([var.namespace, var.environment]))
