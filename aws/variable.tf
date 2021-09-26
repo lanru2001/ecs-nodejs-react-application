@@ -264,7 +264,7 @@ variable "instance_tag" {
   default = ""
 }
 
-ariable "allocated_storage" {
+variable "allocated_storage" {
   description = "The allocated storage in gigabytes"
   type        = number
   default     = 20
@@ -320,12 +320,6 @@ variable "engine_version" {
 
 variable "instance_class" {
   description = "The instance type of the RDS instance"
-  type        = string
-  default     = ""
-}
-
-variable "name" {
-  description = "The DB name to create. If omitted, no database is created initially"
   type        = string
   default     = ""
 }
