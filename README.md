@@ -38,6 +38,7 @@ Nodejs-React Application Architecture Design
 Tech stack:
 - Nodejs
 - React
-- Mysql
+- MySQL
+- Terraform
 - Bash Scripting 
-- AWS (ECS, ECR, IAM, SECURITY GROUP, ALB, FARGATE AND VPC)
+- AWS (ECS, ECR, IAM, SECURITY GROUP, ALB, FARGATE, VPC, EC2(Jenkins server)and CLOUDWATCH(logs and metrics))
