@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     
-                    sh  "docker build -t '${IMAGE}'  /var/lib/jenkins/workspace/nodejs_application" 
+                    sh  "docker build -t '${IMAGE}' ." 
                     
                 }
             }    
