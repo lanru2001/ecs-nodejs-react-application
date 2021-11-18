@@ -1,7 +1,7 @@
 account_id                = "873079457075"
-vpc_cidr                  = "172.31.0.0/16"
-public_subnets_cidr       = [ "172.31.6.0/24" , "172.31.7.0/24" ]
-private_subnets_cidr      = [ "172.31.8.0/24" , "172.31.9.0/24" ]
+vpc_cidr                  = "10.0.0.0/16"
+public_subnets_cidr       = [ "10.0.6.0/24" , "10.0.7.0/24" ]
+private_subnets_cidr      = [ "10.0.8.0/24" , "10.0.9.0/24" ]
 create                    = true
 name                      = "node"
 namespace                 = "lightfeather"
