@@ -5,10 +5,10 @@ pipeline {
   
   environment {
        
-       IMAGE="${PROJECT}:${VERSION}"
-       PROJECT="node-app"
-       VERSION="latest"
-       registry ="873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app"
+       IMAGE    ="${PROJECT}:${VERSION}"
+       PROJECT  ="node-app"
+       VERSION  ="latest"
+       REGISTRY ="873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app"
   } 
   
   stages {
@@ -23,23 +23,25 @@ pipeline {
          }
       }
     
-      stage('Docker Build') {
-         steps {
-            script {
-                docker.build('node-app')
-            }
-         }
+      stage('Building image') {
+            steps {
+                script {
+                    
+                    sh  " docker build -t '${IMAGE}' . " 
+                    
+                }
+            }    
       }
-    
+        
       stage('Push to ECR') {
             steps {
                 script {
                     sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 873079457075.dkr.ecr.us-east-2.amazonaws.com"
                     
-                    sh "docker tag node-app:latest 873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app:latest"
+                    sh "docker tag node-app:latest $REGISTRY:latest"
 
                     
-                    sh "docker push 873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app:latest"
+                    sh "docker push $REGISTRY:latest"
 
                 } 
             }
@@ -49,10 +51,10 @@ pipeline {
       stage('Update To Task Definition') {
          steps {
              script {
-                 withAWS(region: 'ap-southeast-1', credentials: 'awsId') {
+                 withAWS(region: 'us-east-2', credentials: 'awsId') {
                     taskDefRegistry = readJSON text: sh(returnStdout: true, script:"aws ecs register-task-definition \
-                        --memory 4096 \
-                        --cpu 2048 \
+                        --memory 512 \
+                        --cpu 256 \
                         --task-role-arn <task-role-arn> \
                         --family <task-def-name> \
                         --network-mode awsvpc \
