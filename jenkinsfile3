@@ -1,7 +1,8 @@
 currentBuild.displayName = "nodejs-app-#" + currentBuild.number 
 
 pipeline {
-  agent any {
+
+  agent any 
   
   environment {
        
@@ -91,7 +92,6 @@ pipeline {
           } 
       }    
           
- }
-
+  }
 }
  
