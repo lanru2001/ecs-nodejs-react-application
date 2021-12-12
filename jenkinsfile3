@@ -1,3 +1,4 @@
+# Production grade Jenkinsfile to deploy to lastest docker image to ECR and update task definition.
 
 currentBuild.displayName = "nodejs-app-#" + currentBuild.number 
 
