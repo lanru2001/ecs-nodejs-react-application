@@ -1,0 +1,77 @@
+pipeline {
+  agent any {
+  
+  stages {
+
+      stage('Git Clone') {
+         steps {
+            script {
+               git branch: master,
+               credentialsId: <your credentials id>,
+               url: "https://github.com/lanru2001/Machine-Learning-App-with-React-Django-and-PostgreSQL.git"
+            }
+         }
+      }
+    
+      stage('Docker Build') {
+         steps {
+            script {
+                docker.build('machine-app')
+            }
+         }
+      }
+    
+      stage('docker push SG') {
+           steps {
+              script {
+                 withAWS(region: 'us-east-2', credentials: 'awsId') {
+                    sh "${ecrLogin()}"
+                    sh "docker tag <your-image-name> <your-ecr-uri>"
+                    sh "docker push <your-ecr-uri>"
+                 }
+              }
+           }
+      }
+    
+    
+    
+      stage('Update To Task Definition') {
+         steps {
+             script {
+                 withAWS(region: 'ap-southeast-1', credentials: 'awsId') {
+                    taskDefRegistry = readJSON text: sh(returnStdout: true, script:"aws ecs register-task-definition \
+                        --memory 4096 \
+                        --cpu 2048 \
+                        --task-role-arn <task-role-arn> \
+                        --family <task-def-name> \
+                        --network-mode awsvpc \
+                        --requires-compatibilities EC2 FARGATE \
+                        --cli-input-json file://taskdef.json"), returnPojo: true
+                 }
+             }
+         }
+      }  
+ 
+      stage('Update To ECS') {
+          steps {
+             script { 
+                try {
+                   withAWS(region: 'us-east-2', credentials: 'awsId') {
+                      def updateService = "aws ecs update-service --service <your-ecs-service-name> --cluster <your-cluster-name> --force-new-deployment"
+                      def runUpdateService = sh(returnStdout: true, script: updateService)
+                      def serviceStable = "aws ecs wait services-stable --service $internationalService --cluster $internationalCluster"
+                      sh(returnStdout: true, script: serviceStable)
+                      # put all your slack messaging here
+                   }
+                }  
+                catch(Exception e) {
+                    echo e.message.toString()
+                }
+             }
+          } 
+      }    
+          
+ }
+
+}
+ 
