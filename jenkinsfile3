@@ -3,6 +3,14 @@ currentBuild.displayName = "nodejs-app-#" + currentBuild.number
 pipeline {
   agent any {
   
+  environment {
+       
+       IMAGE="${PROJECT}:${VERSION}"
+       PROJECT="node-app"
+       VERSION="latest"
+       registry ="873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app"
+  } 
+  
   stages {
 
       stage('Git Clone') {
