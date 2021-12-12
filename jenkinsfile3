@@ -10,7 +10,7 @@ pipeline {
             script {
                git branch: master,
                credentialsId: <your credentials id>,
-               url: "https://github.com/lanru2001/Machine-Learning-App-with-React-Django-and-PostgreSQL.git"
+               url: "https://github.com/lanru2001/Nodejs-React-App.git"
             }
          }
       }
@@ -18,7 +18,7 @@ pipeline {
       stage('Docker Build') {
          steps {
             script {
-                docker.build('machine-app')
+                docker.build('node-app')
             }
          }
       }
