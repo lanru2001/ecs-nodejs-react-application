@@ -5,10 +5,17 @@ pipeline {
   
   environment {
        
-       IMAGE    ="${PROJECT}:${VERSION}"
-       PROJECT  ="node-app"
-       VERSION  ="latest"
-       REGISTRY ="873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app"
+       IMAGE         = "${PROJECT}:${VERSION}"
+       PROJECT       = "node-app"
+       VERSION       = "latest"
+       REGISTRY      = "873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app"
+       ECS_SERVICE   = " "
+       ECS_CLUSTER   = " "
+       FAMILY        = ""
+       TASK_ROLE_ARN = ""  
+       NETWORK_MODE  = "awsvpc"
+       REQ_COMPATIBILITIES = "EC2 FARGATE"
+       
   } 
   
   stages {
@@ -55,10 +62,10 @@ pipeline {
                     taskDefRegistry = readJSON text: sh(returnStdout: true, script:"aws ecs register-task-definition \
                         --memory 512 \
                         --cpu 256 \
-                        --task-role-arn <task-role-arn> \
-                        --family <task-def-name> \
-                        --network-mode awsvpc \
-                        --requires-compatibilities EC2 FARGATE \
+                        --task-role-arn $TASK_ROLE_ARN \
+                        --family $FAMILY \
+                        --network-mode $NETWORK_MODE \
+                        --requires-compatibilities $REQ_COMPATIBILITIES \
                         --cli-input-json file://taskdef.json"), returnPojo: true
                  }
              }
@@ -70,9 +77,9 @@ pipeline {
              script { 
                 try {
                    withAWS(region: 'us-east-2', credentials: 'awsId') {
-                      def updateService = "aws ecs update-service --service <your-ecs-service-name> --cluster <your-cluster-name> --force-new-deployment"
+                      def updateService    = " aws ecs update-service  --service $ECS_SERVICE   --cluster $ECS_CLUSTER  --force-new-deployment "
                       def runUpdateService = sh(returnStdout: true, script: updateService)
-                      def serviceStable = "aws ecs wait services-stable --service $internationalService --cluster $internationalCluster"
+                      def serviceStable    = "aws ecs wait services-stable --service $ECS_SERVICE --cluster $ECS_CLUSTER "
                       sh(returnStdout: true, script: serviceStable)
                       # put all your slack messaging here
                    }
