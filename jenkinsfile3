@@ -57,7 +57,6 @@ pipeline {
             }
       }    
     
-    
       stage('Update To Task Definition') {
          steps {
              script {
