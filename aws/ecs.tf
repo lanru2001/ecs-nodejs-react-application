@@ -159,7 +159,7 @@ resource "aws_alb_listener" "ecs_alb_http_listner" {
 #  load_balancer_arn = aws_lb.feather_lb.id
 #  port              = "443"
 #  protocol          = "HTTPS"
-#  ssl_policy        = ""
+#  ssl_policy        = "ELBSecurityPolicy-2016-08"
 #  certificate_arn   = var.certificate_arn
 #  depends_on        = [ aws_alb_target_group.feather_alb_tg_group ]
 #
