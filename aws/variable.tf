@@ -540,6 +540,11 @@ variable "identifier" {
   default     = ""
 }
 
+variable "certificate_arn" {
+  description = "AWS Certificate Manager ARN for validated domain"
+  default     = ""
+}
+
 locals {
  
   environment_prefix = join(var.delimiter, compact([var.namespace, var.environment]))
