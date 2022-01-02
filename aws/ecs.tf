@@ -141,14 +141,33 @@ resource "aws_alb_listener" "ecs_alb_http_listner" {
   load_balancer_arn = aws_lb.feather_lb.id
   port              = 80
   protocol          = "HTTP"
+  
+  depends_on        = [ aws_alb_target_group.feather_alb_tg_group ]
+	
 
   default_action {
-    type = "forward"
-    target_group_arn = aws_alb_target_group.feather_alb_tg_group.arn
+     type             = "forward"
+     target_group_arn = aws_alb_target_group.feather_alb_tg_group.arn
   }
 
-  depends_on        = [ aws_alb_target_group.feather_alb_tg_group ]
 }
+
+#Update the default listener so that it listens at HTTPS requests on port 443 (as opposed to HTTP on port 80)
+
+# Listener (redirects traffic from the load balancer to the target group)
+#resource "aws_alb_listener" "ecs-alb-http-listener" {
+#  load_balancer_arn = aws_lb.feather_lb.id
+#  port              = "443"
+#  protocol          = "HTTPS"
+#  ssl_policy        = ""
+#  certificate_arn   = var.certificate_arn
+#  depends_on        = [ aws_alb_target_group.feather_alb_tg_group ]
+#
+#  default_action {
+#    type             = "forward"
+#    target_group_arn = aws_alb_target_group.feather_alb_tg_group.arn
+#  }
+#}
 
 #IAM roles for ecs task execution and task role
 resource "aws_iam_role"   "ecs_task_execution_role" {
