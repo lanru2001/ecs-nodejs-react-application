@@ -68,7 +68,7 @@ pipeline {
                         --family $FAMILY \
                         --network-mode $NETWORK_MODE \
                         --requires-compatibilities $REQ_COMPATIBILITIES \
-                        --cli-input-json file://taskdef.json"), returnPojo: true
+                        --cli-input-json ("file://taskdef.json"), returnPojo: true
                  }
              }
          }
