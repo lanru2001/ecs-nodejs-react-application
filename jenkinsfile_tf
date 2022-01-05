@@ -9,7 +9,6 @@ pipeline {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_REGION            = us-east-2
-        TF_IN_AUTOMATION      = '1'
         ENV                   = dev
         ENV_VAR_PATH          = dev.tfvars
         SRC_PATH              = aws
@@ -26,7 +25,7 @@ pipeline {
             }
         } 
         
-         stage('Plan') {
+        stage('Init') {
             steps {
                 script {  
                 
@@ -36,7 +35,7 @@ pipeline {
                 }
             }
     
-         }
+        }
          
         stage('Plan') {
             steps {
@@ -48,6 +47,7 @@ pipeline {
                      sh ' terraform plan  -var-file=./$SRC_PATH/$ENV/$ENV_VAR_PATH  -var region=$AWS_REGION  -auto-approve ' 
                      
                 }
+                
             }
             
         }
