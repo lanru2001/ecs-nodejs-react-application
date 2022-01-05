@@ -1,3 +1,4 @@
+currentBuild.displayName = "Terraform-Deployment-#" + currentBuild.number 
 
 pipeline {
 
