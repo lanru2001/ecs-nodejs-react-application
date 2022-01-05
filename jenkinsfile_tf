@@ -6,6 +6,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_REGION            = us-east-2
         TF_IN_AUTOMATION      = '1'
         ENV                   = dev.tfvars
     }
@@ -27,14 +28,13 @@ pipeline {
                 sh ' terraform init '
                 sh ' terraform fmt '
                 sh ' terraform validate '
-                sh ' terraform plan -var-file=$ENV -auto-approve '
-               
+                sh ' terraform plan -var-file=$ENV -auto-approve  -var region=$AWS_REGION '               
             }
         }
 
         stage('Apply') {
             steps {
-                sh ' terraform apply -var-file=$ENV -auto-approve ' 
+                sh ' terraform apply -var-file=$ENV -auto-approve -var region=$AWS_REGION ' 
                 sh 'terraform show '
             }
         }
