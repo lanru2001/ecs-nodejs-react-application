@@ -20,7 +20,9 @@ pipeline {
     
         stage('Cloning Git') {
             steps {
+            
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/lanru2001/Nodejs-React-App.git' ]]])     
+            
             }
         } 
         
@@ -43,7 +45,8 @@ pipeline {
                      sh ' terraform init '
                      sh ' terraform fmt '
                      sh ' terraform validate '
-                     sh ' terraform plan  -var-file=./$SRC_PATH/$ENV/$ENV_VAR_PATH  -auto-approve  -var region=$AWS_REGION '               
+                     sh ' terraform plan  -var-file=./$SRC_PATH/$ENV/$ENV_VAR_PATH  -var region=$AWS_REGION  -auto-approve ' 
+                     
                 }
             }
             
@@ -51,8 +54,10 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh ' terraform apply  -var-file=./$SRC_PATH/$ENV/$ENV_VAR_PATH  -auto-approve  -var region=$AWS_REGION ' 
+            
+                sh ' terraform apply  -var-file=./$SRC_PATH/$ENV/$ENV_VAR_PATH  -var region=$AWS_REGION  -auto-approve ' 
                 sh ' terraform show '
+                
             }
         }
     }
