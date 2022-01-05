@@ -1,17 +1,13 @@
 #Jenkins declarative pipeline
 pipeline {
-    agent any
 
-    parameters {
-        string(name: 'environment', defaultValue: 'dev', description: 'environment file to use for deployment')
-        string(name: 'version', defaultValue: '', description: 'Version variable to pass to Terraform')
-        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
-    }
+    agent any
     
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         TF_IN_AUTOMATION      = '1'
+        ENV                   = dev.tfvars
     }
 
     stages {
@@ -28,38 +24,19 @@ pipeline {
                 script {
                     currentBuild.displayName = params.version
                 }
-                sh ' terraform init -input=false '
-                sh " terraform plan -input=false -out tfplan -var 'version=${params.version}' -var-file=environments/${params.environment}.tfvars "
-                sh ' terraform show -no-color tfplan > tfplan.txt '
-            }
-        }
-
-        stage('Approval') {
-            when {
-                not {
-                    equals expected: true, actual: params.autoApprove
-                }
-            }
-
-            steps {
-                script {
-                    def plan = readFile 'tfplan.txt'
-                    input message: "Do you want to apply the plan?",
-                        parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-                }
+                sh ' terraform init '
+                sh ' terraform fmt '
+                sh ' terraform validate '
+                sh ' terraform plan -var-file=$ENV -auto-approve '
+               
             }
         }
 
         stage('Apply') {
             steps {
-                sh " terraform apply -var-file=environments/${params.environment}.tfvars -auto-approve " 
+                sh ' terraform apply -var-file=$ENV -auto-approve ' 
+                sh 'terraform show '
             }
-        }
-    }
-
-    post {
-        always {
-            archiveArtifacts artifacts: 'tfplan.txt'
         }
     }
 }
