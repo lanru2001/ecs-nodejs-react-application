@@ -1,3 +1,14 @@
+# S3 remote state 
+terraform {
+ backend "s3" {
+    bucket         = "tf-state-file01"  
+    key            = "project/ecs"
+    region         = "us-east-2"
+    dynamodb_table = "eks_ecommerce_dynamodb"
+
+ }
+} 
+
 #Cloudwatch log group 
 resource "aws_cloudwatch_log_group" "feather_log" {
   name              = var.cloudwatch_log_group_name
