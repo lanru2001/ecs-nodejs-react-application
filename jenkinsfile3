@@ -61,7 +61,7 @@ pipeline {
          steps {
              script {
                  withAWS(region: 'us-east-2', credentials: 'awsId') {
-                    taskDefRegistry = readJSON text: sh(returnStdout: true, script:"aws ecs register-task-definition \
+                    taskDefRegistry = readJSON text: sh(returnStdout: true, script:"aws ecs register-task-definition) \
                         --memory 512 \
                         --cpu 256 \
                         --task-role-arn $TASK_ROLE_ARN \
