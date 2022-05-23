@@ -491,11 +491,11 @@ resource "aws_nat_gateway" "app_nat_gw" {
 #ssh-keygen -f mykey
 
 #Key pair 
-resource "aws_key_pair" "mykeypair" {
-  key_name   = "mykeypair"
-  #public_key = file(var.PATH_TO_PUBLIC_KEY)
-
-}
+#resource "aws_key_pair" "mykeypair" {
+#  key_name   = "mykeypair"
+#  public_key = file(var.PATH_TO_PUBLIC_KEY)
+#
+#}
 
 #Elastic Network Interface 
 resource "aws_network_interface"  "uclib_interface" {
@@ -508,15 +508,24 @@ resource "aws_network_interface"  "uclib_interface" {
 
 }
 
+#Template file
+
+data "template_file" "user_data_template" {
+  
+  template =file("${path.module}/user_data.sh")
+
+} 
+
+
 #EC2 Instance 
 resource "aws_instance" "app_server" {
   count                    = var.create ? 1:0
   ami                      = var.ami_id 
   instance_type            = "t2.micro" 
-  key_name                 = aws_key_pair.mykeypair.key_name
-  vpc_security_group_ids   = [  aws_security_group.feather_service.id  ]          #[ "sg-09fa14dc3ccbc786b" ]
+  key_name                 = "mykey"
+  vpc_security_group_ids   = [  aws_security_group.feather_service.id  ]   #[ "sg-09fa14dc3ccbc786b" ]
   subnet_id                = aws_subnet.app_public_subnets[0].id   
-  user_data                = file("userdata.sh")
+  user_data                = base64encode("${data.template_file.user_data_template.rendered}")
   lifecycle {
     create_before_destroy  = true
   }
