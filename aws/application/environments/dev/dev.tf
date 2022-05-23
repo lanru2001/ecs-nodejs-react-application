@@ -19,7 +19,7 @@ module "node_ecs" {
    create                    = true
    name                      = "node"
    namespace                 = "lightfeather"
-   docker_image              = "873079457075.dkr.ecr.us-east-2.amazonaws.com/node-app:latest"
+   docker_image              = "873079457075.dkr.ecr.us-east-2.amazonaws.com/node-test-app"
    environment               = "nodejs"
    stage                     = "dev"
    aws_region                = "us-east-2"
@@ -29,7 +29,7 @@ module "node_ecs" {
    bucket_name               = "lightfeather-lb-logs"
    node_container_port       = "80"
    name_prefix               = "light-app"
-   health_check_path         = "/robots.txt"
+   health_check_path         = "/"
    ami_id                    = "ami-03d64741867e7bb94"
    #public_subnet_id         = "subnet-097c6f21a3fc9e20a"
    PATH_TO_PUBLIC_KEY        = "mykey.pub"
