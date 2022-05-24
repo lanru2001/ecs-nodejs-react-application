@@ -12,7 +12,7 @@ terraform {
 
 module "node_ecs" {
 
-   source                    = "/root/Nodejs-React-App/aws/application"
+   source                    = "../../"
    vpc_cidr                  = "172.31.0.0/16"
    public_subnets_cidr       = [ "172.31.6.0/24" , "172.31.7.0/24" ]
    private_subnets_cidr      = [ "172.31.8.0/24" , "172.31.9.0/24" ]
