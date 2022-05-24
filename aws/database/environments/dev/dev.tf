@@ -1,9 +1,17 @@
 
+# S3 remote state 
 
+terraform {
+ backend "s3" {
+    bucket         = "tf-state-file01"  
+    key            = "project/dev/rds"
+    region         = "us-east-2"
+    dynamodb_table = "eks_ecommerce_dynamodb"
 
+ }
+}
 
-
-module {
+module "mysql_rds"  {
   
   source                  = "../../"
   vpc_cidr                = "172.31.0.0/16"
@@ -12,7 +20,6 @@ module {
   create                    = true
   name                      = "alaffia"
   namespace                 = "alaffia"
-  docker_image              = "873079457075.dkr.ecr.us-east-2.amazonaws.com/alaffia-app"
   environment               = "nodejs"
   stage                     = "dev"
   aws_region                = "us-east-2"
