@@ -19,7 +19,7 @@ module "node_ecs" {
    create                    = true
    name                      = "node"
    namespace                 = "lightfeather"
-   docker_image              = "873079457075.dkr.ecr.us-east-2.amazonaws.com/node-test-app"
+   docker_image              = "873079457075.dkr.ecr.us-east-2.amazonaws.com/node-react-app:1.0"
    environment               = "nodejs"
    stage                     = "dev"
    aws_region                = "us-east-2"

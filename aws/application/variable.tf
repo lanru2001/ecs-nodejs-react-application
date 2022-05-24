@@ -235,7 +235,7 @@ variable "bucket_prefix" {
 variable "health_check_path" {
   type        = string
   description = "Path to check if the service is healthy , e.g \"/status\""
-  default     = "/health"
+  default     = ""
 }
 
 variable "ami_id" {

@@ -1,0 +1,5 @@
+mykey.pub
+mykey
+.terraform*
+.terraform.hcl
+
