@@ -4,7 +4,7 @@ terraform {
  backend "s3" {
     bucket         = "tf-state-file02"  
     key            = "project/qa/rds"
-    region         = "us-east-2"
+    region         = "us-east-1"
     dynamodb_table = "eks_ecommerce_dynamodb"
 
  }
@@ -21,8 +21,8 @@ module "mysql_rds"  {
   namespace                 = "alaffia"
   environment               = "nodejs"
   stage                     = "dev"
-  aws_region                = "us-east-2"
-  azs                       = ["us-east-2a" , "us-east-2b"]
+  aws_region                = "us-east-1"
+  azs                       = ["us-east-1a" , "us-east-1b"]
   ami_id                    = "ami-03d64741867e7bb94"
   #public_subnet_id         =  { "subnet-097c6f21a3fc9e20a" }
   db_name                   = "ecs_db"
