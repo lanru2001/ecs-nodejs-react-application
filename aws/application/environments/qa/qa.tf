@@ -4,7 +4,7 @@ terraform {
  backend "s3" {
     bucket         = "tf-state-file02"  
     key            = "project/qa/ecs-app"
-    region         = "us-east-2"
+    region         = "us-west-2"
     dynamodb_table = "eks_ecommerce_dynamodb"
 
  }
@@ -22,8 +22,8 @@ module "node_ecs" {
    docker_image              = "873079457075.dkr.ecr.us-east-2.amazonaws.com/node-react-app:1.0"
    environment               = "nodejs"
    stage                     = "dev"
-   aws_region                = "us-east-2"
-   azs                       = ["us-east-2a" , "us-east-2b"]
+   aws_region                = "us-west-2"
+   azs                       = ["us-west-2a" , "us-west-2b"]
    cloudwatch_log_group_name = "ecs/lightfeather-nodejs-dev"
    cloudwatch_log_stream     = "ecs"
    bucket_name               = "lightfeather-lb-logs"
