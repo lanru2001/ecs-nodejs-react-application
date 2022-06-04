@@ -23,7 +23,7 @@ resource "aws_db_instance" "uat_rds_seed" {
   username                        = jsondecode(data.aws_secretsmanager_secret_version.postgres_secret2.secret_string)["username"]  
   password                        = jsondecode(data.aws_secretsmanager_secret_version.postgres_secret2.secret_string)["password"]         
   port                            = var.db_instance_port
-  vpc_security_group_ids          = var.vpc_security_group_ids
+  vpc_security_group_ids          = aws_security_group.db_security_group
   db_subnet_group_name            = aws_db_subnet_group.uat_db_subnet_group.name
   parameter_group_name            = aws_db_parameter_group.uat_db_pg.name
   #option_group_name               = var.option_group_name
