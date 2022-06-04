@@ -11,41 +11,46 @@ terraform {
  }
 }
 
-module "mysql_rds"  {
+module "postgresql"  {
   
-  source                  = "../../"
-  vpc_cidr                = "172.31.0.0/16"
-  public_subnets_cidr       = [ "172.31.6.0/24" , "172.31.7.0/24" ]
-  private_subnets_cidr      = [ "172.31.8.0/24" , "172.31.9.0/24" ]
-  create                    = true
-  name                      = "alaffia"
-  namespace                 = "alaffia"
-  environment               = "nodejs"
-  stage                     = "dev"
-  aws_region                = "us-east-2"
-  azs                       = ["us-east-2a" , "us-east-2b"]
-  ami_id                    = "ami-03d64741867e7bb94"
-  #public_subnet_id         =  { "subnet-097c6f21a3fc9e20a" }
-  db_name                   = "ecs_db"
-  db_instance_port          = 3306
-  username                  = "mysqladminuser" 
-  password                  = "opensourceiseverywhere"  #Password in SSM parameter store
-  family                    = "mysql5.7"
-  private_subnet_id         = "subnet-0c6700f2915010226" 
-  engine                    = "mysql"
-  engine_version            = "5.7.26"
-  instance_class            = "db.t2.micro"
-  tag                       = "app-dev"
-  container_port            = 9000
-  disk_size                 = 10
-  pvt_desired_size          = 2
-  pvt_max_size              = 2
-  pvt_min_size              = 2
-  publ_desired_size         = 2
-  publ_max_size             = 2
-  publ_min_size             = 2
-  desired_size              = 2 
-  instance_type             = "t2.medium" 
-  identifier                = "node-react-app-db"
-  #certificate_arn          = 
-}  
+  source                          = "../../"
+  engine_version                  = "12.8"
+  engine                          = "postgres"
+  instance_class                  = "db.t3.small"
+  allocated_storage               =  "20"
+  storage_type                    = "gp2"
+  storage_encrypted               = false
+  family                          = "postgres12"
+  #kms_key_id                     = 
+  identifier                      = "uat-rds-seed"
+  db_name                         = "uatRdsSeed"
+  #username                        = "postgresql"
+  #password                        = "Openssh1!"
+  vpc_security_group_ids          =  [ "sg-0e21285b96d9869d1" ]
+  subnet_ids                      = [ "subnet-072e54b62a6d1944d", "subnet-0e07ca691f789db64", "subnet-0288aaf61f04bddac","subnet-03dc15dc94e5967aa"  ]
+  db_instance_port                = "5432"
+  #option_group_name               = 
+  multi_az                        = "true"
+  iops                            = 0
+  allow_major_version_upgrade     = false
+  auto_minor_version_upgrade      = true
+  apply_immediately               = false
+  skip_final_snapshot             = true
+
+  performance_insights_enabled    = true
+  performance_insights_retention_period = 7
+  
+  backup_retention_period         = "7"
+  #max_allocated_storage           = "20"
+  #monitoring_interval            = var.monitoring_interval
+  #monitoring_role_arn            = var.monitoring_interval > 0 ? local.monitoring_role_arn : null
+
+  enabled_cloudwatch_logs_exports =  [ "postgresql", "upgrade" ]
+  deletion_protection             = false
+  delete_automated_backups        = true
+  db_subnet_group_name            = "uat_db_subnet_group"
+  parameter_group_name            = "uat-db-pg"
+  maintenance_window              = "Mon:00:00-Mon:03:00"
+  secretmanager_name              = "uat/postgres/uat-rds-seed"
+
+}
