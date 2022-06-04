@@ -1,6 +1,14 @@
-#Create a Database Using the RDS Instance in AWS
+#Passing password and username from secrets manager
+data "aws_secretsmanager_secret" "postgres_secret" {
+  name = var.secretmanager_name
+}
 
-resource "aws_db_instance" "app_mysql" {
+data "aws_secretsmanager_secret_version" "postgres_secret2" {
+  secret_id = data.aws_secretsmanager_secret.postgres_secret.id
+}
+
+#Create a Database Using the RDS Instance in AWS
+resource "aws_db_instance" "uat_rds_seed" {
   
   count                           = var.create ? 1 : 0
   identifier                      = var.identifier
@@ -10,16 +18,16 @@ resource "aws_db_instance" "app_mysql" {
   allocated_storage               = var.allocated_storage
   storage_type                    = var.storage_type
   storage_encrypted               = var.storage_encrypted
-  kms_key_id                      = var.kms_key_id
-  name                            = var.name
-  username                        = var.username
-  password                        = var.password
+  #kms_key_id                     = var.kms_key_id
+  db_name                         = var.db_name
+  username                        = jsondecode(data.aws_secretsmanager_secret_version.postgres_secret2.secret_string)["username"]  
+  password                        = jsondecode(data.aws_secretsmanager_secret_version.postgres_secret2.secret_string)["password"]         
   port                            = var.db_instance_port
-  vpc_security_group_ids          = [ aws_security_group.db_security_group.id ]
-  db_subnet_group_name            = "${aws_db_subnet_group.db_subnet_group.name}"
-  parameter_group_name            = aws_db_parameter_group.app_db_pg.name
-  option_group_name               = var.option_group_name
-  availability_zone               = "us-east-2a"  #var.azs
+  vpc_security_group_ids          = var.vpc_security_group_ids
+  db_subnet_group_name            = aws_db_subnet_group.uat_db_subnet_group.name
+  parameter_group_name            = aws_db_parameter_group.uat_db_pg.name
+  #option_group_name               = var.option_group_name
+  #availability_zone               = var.azs
   multi_az                        = var.multi_az
   iops                            = var.iops
   publicly_accessible             = var.publicly_accessible
@@ -33,7 +41,7 @@ resource "aws_db_instance" "app_mysql" {
   #performance_insights_retention_period = var.performance_insights_retention_period 
   
   backup_retention_period = var.backup_retention_period
-  max_allocated_storage   = var.max_allocated_storage
+  #max_allocated_storage   = var.max_allocated_storage
   #monitoring_interval     = var.monitoring_interval
   #monitoring_role_arn     = var.monitoring_interval > 0 ? local.monitoring_role_arn : null
 
@@ -42,25 +50,26 @@ resource "aws_db_instance" "app_mysql" {
   delete_automated_backups        = var.delete_automated_backups
 
   tags = {
-      "Name" = var.tag
+      "Name" = var.db_name
   }
 
 }
 
-resource "aws_db_parameter_group" "app_db_pg" {
-  name   = "${var.name_prefix }-pg"
+resource "aws_db_parameter_group" "uat_db_pg" {
+  name   = var.parameter_group_name
   family = var.family
 
 }
 
-resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "${var.name}_subnet_group"
-  subnet_ids = [ aws_subnet.app_public_subnets[0].id, aws_subnet.app_private_subnets[1].id ]
+resource "aws_db_subnet_group" "uat_db_subnet_group" {
+  name       = var.db_subnet_group_name
+  subnet_ids = var.subnet_ids
 
   tags = {
-    Name = "My DB subnet group"
+    Name = "DB_subnet_group"
   }
 }
+
 
 # Security group 
 resource "aws_security_group" "db_security_group" {
