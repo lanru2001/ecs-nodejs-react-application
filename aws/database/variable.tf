@@ -390,16 +390,6 @@ variable "secretmanager_name" {
   default     = ""
 }
 
-
-
-
-
-
-
-
-
-
-
 locals {
  
   environment_prefix = join(var.delimiter, compact([var.namespace, var.environment]))
