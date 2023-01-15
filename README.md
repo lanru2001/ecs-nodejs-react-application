@@ -35,7 +35,7 @@ Have this command node ./api/server.js with the CMD. This automatically runs whe
 
 ![image](https://user-images.githubusercontent.com/59709429/134820678-2f6a7a5e-9b5a-4399-87bc-198242c5279a.png)
 
-Tech stack:
+Technology stack:
 - Nodejs
 - React
 - MySQL
