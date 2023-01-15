@@ -1,3 +1,5 @@
+#Using a base image with Node v10
+
 FROM node:10 AS ui-build
 WORKDIR /usr/src/app
 COPY my-app/ ./my-app/
