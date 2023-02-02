@@ -19,7 +19,6 @@ pipeline {
 
     stages {
     
-    
         stage('Cloning Git') {
             steps {
             
