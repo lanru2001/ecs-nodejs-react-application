@@ -7,30 +7,30 @@ pipeline {
     environment {
     
         REGION                = "us-east-2"
-        // Note: <environ .tfvars>
         ENV_VAR_PATH          = "dev.tfvars"
         JENKINS_DIR           = "/var/lib/jenkins"
         // Note: "workspace/<your-job-name>"
-        JOB_WKSPACE_DIR       = "workspace/terraform_jenkins_provisioning"
-        // Note: "directory-path-of-the-environment-to-build"
-        TF_PATH_ON_SRC        = "aws/dev"
+        JOB_WKSPACE_DIR       = "workspace/TF-automation"
+        TF_PATH_ON_SRC        = "environments/dev"
         
     }
 
     stages {
     
+    
         stage('Cloning Git') {
             steps {
             
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'aws_cred', url: 'https://github.com/lanru2001/Nodejs-React-App.git' ]]])     
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'http://gl-misdkrlv02:8030/Azeez.Olanrewaju/ecs-terraform-module.git' ]]])     
             
             }
         } 
         
         stage('Init') {
+            
             steps {
                 
-               script {  
+                withAWS(credentials: 'aws_security_credential', region: 'us-east-2') {
                 
                     sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform init "
                     sh "cd  $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform fmt  "                
@@ -44,7 +44,7 @@ pipeline {
             
             steps {
                 
-                script {
+                withAWS(credentials: 'aws_security_credential', region: 'us-east-2') {
                     
                     sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform validate "
                     sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform plan  -var-file=$ENV_VAR_PATH " 
@@ -57,14 +57,16 @@ pipeline {
 
         stage('Apply') {
                 
-             
             steps {
-            
-                sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform apply  -var-file=$ENV_VAR_PATH  -auto-approve " 
-                sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform show  "
-                sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform destroy  -var-file=$ENV_VAR_PATH  -auto-approve " 
                 
-            }
+                withAWS(credentials: 'aws_security_credential', region: 'us-east-2') {
+            
+                  sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform apply  -var-file=$ENV_VAR_PATH  -auto-approve " 
+                  sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform show  "
+                  sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform destroy  -var-file=$ENV_VAR_PATH  -auto-approve " 
+                
+                }
+            }    
         }
     }
 }
