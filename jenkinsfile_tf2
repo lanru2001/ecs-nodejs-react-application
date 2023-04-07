@@ -32,8 +32,8 @@ pipeline {
                 
                 withAWS(credentials: 'aws_security_credential', region: 'us-east-2') {
                 
-                    sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform init "
-                    sh "cd  $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform fmt  "                
+                    sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC && terraform init "
+                    sh " cd  $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC && terraform fmt "                
                 
                 }
             }
@@ -46,8 +46,8 @@ pipeline {
                 
                 withAWS(credentials: 'aws_security_credential', region: 'us-east-2') {
                     
-                    sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform validate "
-                    sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform plan  -var-file=$ENV_VAR_PATH " 
+                    sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC && terraform validate "
+                    sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC && terraform plan  -var-file=$ENV_VAR_PATH " 
                      
                 }
                 
@@ -61,9 +61,9 @@ pipeline {
                 
                 withAWS(credentials: 'aws_security_credential', region: 'us-east-2') {
             
-                  sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform apply  -var-file=$ENV_VAR_PATH  -auto-approve " 
-                  sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform show  "
-                  sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC   && terraform destroy  -var-file=$ENV_VAR_PATH  -auto-approve " 
+                  sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC && terraform apply  -var-file=$ENV_VAR_PATH  -auto-approve " 
+                  sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC && terraform show "
+                  sh " cd $JENKINS_DIR/$JOB_WKSPACE_DIR/$TF_PATH_ON_SRC && terraform destroy  -var-file=$ENV_VAR_PATH  -auto-approve " 
                 
                 }
             }    
