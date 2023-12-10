@@ -1,4 +1,4 @@
-# Dockerizing the App
+# Dockerize the App
 
 Use multi-stage builds for efficient docker images. Building efficient Docker images are very important for faster downloads and lesser surface attacks. In this multi-stage build, building a React app and put those static assets in the build folder is the first step. The second step involves taking those static build files and serve those with node server.
 
