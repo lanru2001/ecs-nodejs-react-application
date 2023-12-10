@@ -1,11 +1,10 @@
 # S3 remote state 
-
 terraform {
  backend "s3" {
     bucket         = "tf-state-file02"  
     key            = "project/qa/rds"
-    region         = "us-east-1"
-    dynamodb_table = "eks_ecommerce_dynamodb"
+    region         = "us-east-2"
+    dynamodb_table = "qa_dynamodb"
 
  }
 }
@@ -16,7 +15,7 @@ module "qa_db"  {
   engine_version                  = "12.8"
   engine                          = "postgres"
   instance_class                  = "db.t3.small"
-  allocated_storage               =  "20"
+  allocated_storage               = "20"
   storage_type                    = "gp2"
   storage_encrypted               = false
   family                          = "postgres12"
