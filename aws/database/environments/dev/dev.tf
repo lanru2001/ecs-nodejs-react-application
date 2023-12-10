@@ -11,7 +11,7 @@ terraform {
  }
 }
 
-module "postgresql"  {
+module "dev_db"  {
   
   source                          = "../../"
   engine_version                  = "12.8"
