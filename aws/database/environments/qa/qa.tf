@@ -10,7 +10,7 @@ terraform {
  }
 }
 
-module "postgresql"  {
+module "qa_db"  {
   
   source                          = "../../"
   engine_version                  = "12.8"
