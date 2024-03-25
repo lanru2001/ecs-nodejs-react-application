@@ -57,7 +57,8 @@ sudo usermod -aG docker $USER
 #Bash script to install Jenkins on AWS EC2 
 sudo wget -O /etc/yum.repos.d/jenkins.repo \
     https://pkg.jenkins.io/redhat-stable/jenkins.repo
-sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+#Note: make sure you check the valid latest public key for Jenkins 
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
 sudo yum upgrade -y
 sudo yum install jenkins --nobest -y 
 sudo systemctl daemon-reload
