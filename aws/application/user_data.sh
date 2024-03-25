@@ -1,5 +1,3 @@
-
-   
 #!/bin/bash
 
 #Install basic packages and set SELinux to permissive 
