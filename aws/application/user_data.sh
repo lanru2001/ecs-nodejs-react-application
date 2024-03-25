@@ -20,10 +20,6 @@ sudo yum -y install aws-cli
 # Confirm the AWS CLI was installed.
  aws --version
 
-#  Bash script to install Java8 on AWS EC2
-sudo yum remove -y java
-sudo yum install -y java-1.8.0-openjdk
-
 #Install Maven"
 sudo yum install -y maven
 
