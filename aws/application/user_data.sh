@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#Install basic packages and set SELinux to permissive 
+#Install basic packages and set SELinux to permissive
 sudo yum  -y update
-sudo yum install -y vim bash-completion curl wget tar telnet 
+sudo yum install -y vim bash-completion curl wget tar telnet
 sudo setstatus
 sudo setenforce 0
 sudo sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
@@ -11,21 +11,21 @@ sudo sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
 sudo yum -y install wget
 sudo yum -y install git
 
-#Install aws cli 
+#Install aws cli
 
 # Install the latest system updates.
-sudo yum -y update  
+sudo yum -y update
 # Install the AWS CLI
 sudo yum -y install aws-cli
 # Confirm the AWS CLI was installed.
- aws --version              
+ aws --version
 
-#  Bash script to install Java8 on AWS EC2 
+#  Bash script to install Java8 on AWS EC2
 sudo yum remove -y java
 sudo yum install -y java-1.8.0-openjdk
 
 #Install Maven"
-sudo yum install -y maven 
+sudo yum install -y maven
 
 #Install git
 sudo yum install -y git
@@ -52,12 +52,14 @@ sudo systemctl enable docker
 #Run docker with privilege without a sudo
 sudo usermod -aG docker $USER
 
-#Bash script to install Jenkins on AWS EC2 
+#Bash script to install Jenkins on AWS EC2
+
 sudo wget -O /etc/yum.repos.d/jenkins.repo \
     https://pkg.jenkins.io/redhat-stable/jenkins.repo
-#Note: make sure you check the valid latest public key for Jenkins 
 sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
 sudo yum upgrade -y
-sudo yum install jenkins --nobest -y 
+# Add required dependencies for the jenkins package
+sudo yum install fontconfig java-17-openjdk -y
+sudo yum install jenkins
 sudo systemctl daemon-reload
 sudo systemctl start jenkins
